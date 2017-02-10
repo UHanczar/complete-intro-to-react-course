@@ -1,9 +1,17 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
 var div = React.DOM.div;
-var h1 = React.DOM.h1;
+var MyTitle = require('./my-title');
+
+var MyTitleFactory = React.createFactory(MyTitle);
+var crEl = React.createElement;
 
 var MyFirstComponent = (
-  div({style: {color: 'red'}},
-    h1(null, 'This is my first component'))
+  div(null,
+    MyTitleFactory({color: 'rebeccapurple', title: 'Props are great'}),
+    React.createElement(MyTitle, {color: 'mediumaquamarine',  title: 'Use props everywhere.' }),
+    crEl(MyTitle, { color: 'peru', title: 'Props are the best!' })
+  )
 );
 
 ReactDOM.render(MyFirstComponent, document.getElementById('app'));
