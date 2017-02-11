@@ -19813,7 +19813,15 @@
 	var MyTitle = React.createClass({
 	  displayName: 'MyTitle',
 	  render: function render() {
-	    return div(null, h1({ style: { color: this.props.color } }, this.props.title));
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'h1',
+	        { style: { color: this.props.color } },
+	        this.props.title
+	      )
+	    );
 	  }
 	});
 
