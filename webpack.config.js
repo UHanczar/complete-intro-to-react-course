@@ -12,8 +12,8 @@ module.exports = {
   },
   stats: {
     colors: true,
-    resone: true,
-    chenks: false
+    reasons: true,
+    chunks: false
   },
   module: {
     // preLoaders: [
@@ -23,14 +23,15 @@ module.exports = {
     //     exclude: /node_modules/
     //   }
     // ],
-    loaders: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader'
-    },
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader'
+      },
       {
         test: /\.json$/,
         loader: 'json-loader'
       }
     ]
   }
-};
+}

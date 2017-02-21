@@ -19827,21 +19827,21 @@
 	    Link = _require.Link;
 
 	var Landing = function Landing() {
-	   return React.createElement(
-	      'div',
-	      { className: 'home-info' },
-	      React.createElement(
-	         'h1',
-	         { className: 'title' },
-	         'svideo'
-	      ),
-	      React.createElement('input', { className: 'search', type: 'text', placeholder: 'Search' }),
-	      React.createElement(
-	         Link,
-	         { to: '/search', className: 'browse-all' },
-	         ' or Browse All'
-	      )
-	   );
+	  return React.createElement(
+	    'div',
+	    { className: 'home-info' },
+	    React.createElement(
+	      'h1',
+	      { className: 'title' },
+	      'svideo'
+	    ),
+	    React.createElement('input', { className: 'search', type: 'text', placeholder: 'Search' }),
+	    React.createElement(
+	      Link,
+	      { to: '/search', className: 'browse-all' },
+	      ' or Browse All'
+	    )
+	  );
 	};
 
 	module.exports = Landing;
@@ -25780,20 +25780,47 @@
 	var ShowCard = __webpack_require__(224);
 	var data = __webpack_require__(225);
 
-	var Search = function Search() {
-	  return React.createElement(
-	    'div',
-	    { className: 'container' },
-	    React.createElement(
+	var Search = React.createClass({
+	  displayName: 'Search',
+	  getInitialState: function getInitialState() {
+	    return {
+	      searchTerm: ''
+	    };
+	  },
+	  handleSearchTermEvent: function handleSearchTermEvent(event) {
+	    this.setState({
+	      searchTerm: event.target.value
+	    });
+	  },
+	  render: function render() {
+	    var _this = this;
+
+	    return React.createElement(
 	      'div',
-	      { className: 'shows' },
-	      data.shows.map(function (IndShow) {
-	        return React.createElement(ShowCard, _extends({}, IndShow, { key: IndShow.imdbID })) /* show={IndShow} */
-	        ;
-	      })
-	    )
-	  );
-	};
+	      { className: 'container' },
+	      React.createElement(
+	        'header',
+	        { className: 'header' },
+	        React.createElement(
+	          'h1',
+	          { className: 'brand' },
+	          'svideo'
+	        ),
+	        React.createElement('input', { defaultValue: this.state.searchTerm, className: 'search-input', type: 'text', placeholder: 'Search', onChange: this.handleSearchTermEvent })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'shows' },
+	        data.shows.filter(function (IndShow) {
+	          return (IndShow.title + ' ' + IndShow.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
+	        }).map(function (IndShow) {
+	          return React.createElement(ShowCard, _extends({}, IndShow, { key: IndShow.imdbID })) /* show={IndShow} */
+	          ;
+	        })
+	      )
+	    );
+	  }
+	});
 
 	module.exports = Search;
 
