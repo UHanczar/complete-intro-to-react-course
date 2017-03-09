@@ -3,15 +3,21 @@ const div = React.DOM.div;
 const h1 = React.DOM.h1;
 
 const MyTitle = React.createClass({
-  render() {
+  propTypes: {
+    data: React.PropTypes.shape({
+      color: React.PropTypes.string.isRequired,
+      title: React.PropTypes.string.isRequired
+    })
+  },
+  render () {
     const colorStyle = {color: this.props.color};
     return (
       <div>
-        <h1 style={ colorStyle }>
-          {this.props.title}
+        <h1 style={colorStyle}>
+          { this.props.title }
         </h1>
       </div>
-    )
+    );
   }
 });
 

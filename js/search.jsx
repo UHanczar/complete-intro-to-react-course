@@ -2,21 +2,21 @@ const React = require('react');
 const ShowCard = require('./show-card');
 const data = require('../public/data');
 
-const Search = React.createClass ({
+const Search = React.createClass({
 
-  getInitialState() {
+  getInitialState () {
     return {
       searchTerm: ''
     }
   },
 
-  handleSearchTermEvent(event) {
+  handleSearchTermEvent (event) {
     this.setState({
       searchTerm: event.target.value
-    })
+    });
   },
 
-  render() {
+  render () {
     return (
       <div className="container">
         <header className="header">
@@ -27,11 +27,11 @@ const Search = React.createClass ({
           {data.shows
             .filter((IndShow) => `${IndShow.title} ${IndShow.description}`.toUpperCase().indexOf(this.state.searchTerm.toUpperCase()) >= 0)
             .map((IndShow) => (
-            <ShowCard {...IndShow} key={IndShow.imdbID}/> /* show={IndShow} */
+              <ShowCard {...IndShow} key={IndShow.imdbID} /> /* show={ IndShow } */
           ))}
         </div>
       </div>
-    )
+    );
   }
 });
 

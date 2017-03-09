@@ -1,3 +1,36 @@
 {
-  "extends": ["standard", "standard-react"]
+  "extends": ["standard", "standard-react"],
+
+  "plugins": [
+      "react",
+      "jsx-a11y",
+      "import",
+      "html"
+  ],
+
+  "settings": {
+        "html": [".html"],
+        "html/javascript-mime-types": ["text/javascript", "text/jsx"],
+        "html/javascript-mime-types": "/^text\\/(javascript|jsx)$/",
+        "react": {
+        "createClass": "createClass",
+        "pragma": "React",
+        "version": "15.0"
+        }
+  },
+
+  "globals": {
+        "React": true,
+        "ReactDOM": true
+  },
+
+  "ecmaFeatures": {
+        "jsx": true
+  },
+
+  "rules": {
+    "semi": [2, "always"],
+    "jsx-quotes": [1, "prefer-double"],
+    "react/prop-types": 1
+  }
 }

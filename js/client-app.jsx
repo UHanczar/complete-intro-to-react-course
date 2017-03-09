@@ -9,10 +9,9 @@ const App = () => (
   <Router history={hashHistory}>
     <Route path='/' component={Layout}>
       <IndexRoute component={Landing} />
-      <Route path='/search' component={Search}/>
+      <Route path='/search' component={Search} />
     </Route>
   </Router>
 );
-
 
 ReactDOM.render(<App />, document.getElementById('app'));
