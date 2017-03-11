@@ -50,7 +50,8 @@
 	var ReactDOM = __webpack_require__(158);
 	var Landing = __webpack_require__(159);
 	var Search = __webpack_require__(223);
-	var Layout = __webpack_require__(226);
+	var Layout = __webpack_require__(225);
+	var Details = __webpack_require__(226);
 
 	var _require = __webpack_require__(160),
 	    Router = _require.Router,
@@ -58,18 +59,35 @@
 	    IndexRoute = _require.IndexRoute,
 	    hashHistory = _require.hashHistory;
 
-	var App = function App() {
-	  return React.createElement(
-	    Router,
-	    { history: hashHistory },
-	    React.createElement(
-	      Route,
-	      { path: '/', component: Layout },
-	      React.createElement(IndexRoute, { component: Landing }),
-	      React.createElement(Route, { path: '/search', component: Search })
-	    )
-	  );
-	};
+	var _require2 = __webpack_require__(227),
+	    shows = _require2.shows;
+
+	var App = React.createClass({
+	  displayName: 'App',
+	  assignShow: function assignShow(nextState, replace) {
+	    var showArray = shows.filter(function (show) {
+	      return show.imdbID === nextState.id;
+	    });
+	    if (showArray.length < 1) {
+	      return replace('/');
+	    }
+	    Object.assign(nextState.params, showArray[0]);
+	    return nextState;
+	  },
+	  render: function render() {
+	    return React.createElement(
+	      Router,
+	      { history: hashHistory },
+	      React.createElement(
+	        Route,
+	        { path: '/', component: Layout },
+	        React.createElement(IndexRoute, { component: Landing }),
+	        React.createElement(Route, { path: '/search', component: Search, shows: shows }),
+	        React.createElement(Route, { path: '/details/:id', component: Details, onEnter: this.asignShow })
+	      )
+	    );
+	  }
+	});
 
 	ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
@@ -25778,10 +25796,16 @@
 
 	var React = __webpack_require__(1);
 	var ShowCard = __webpack_require__(224);
-	var data = __webpack_require__(225);
+	/* const data = require('../public/data'); */
+	var object = React.PropTypes.object;
+
 
 	var Search = React.createClass({
 	  displayName: 'Search',
+
+	  propTypes: {
+	    route: object
+	  },
 	  getInitialState: function getInitialState() {
 	    return {
 	      searchTerm: ''
@@ -25811,10 +25835,10 @@
 	      React.createElement(
 	        'div',
 	        { className: 'shows' },
-	        data.shows.filter(function (IndShow) {
+	        this.props.route.shows.filter(function (IndShow) {
 	          return (IndShow.title + ' ' + IndShow.description).toUpperCase().indexOf(_this.state.searchTerm.toUpperCase()) >= 0;
 	        }).map(function (IndShow) {
-	          return React.createElement(ShowCard, _extends({}, IndShow, { key: IndShow.imdbID })) /* show={IndShow} */
+	          return React.createElement(ShowCard, _extends({}, IndShow, { key: IndShow.imdbID })) /* show={ IndShow } */
 	          ;
 	        })
 	      )
@@ -25876,6 +25900,88 @@
 
 /***/ },
 /* 225 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var React = __webpack_require__(1);
+
+	var Layout = function Layout(props) {
+	  return React.createElement(
+	    "div",
+	    { className: "app-container" },
+	    props.children
+	  );
+	};
+
+	var element = React.PropTypes.element;
+
+
+	Layout.propTypes = {
+	  children: element.isRequired
+	};
+
+	module.exports = Layout;
+
+/***/ },
+/* 226 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var React = __webpack_require__(1);
+
+	var Details = function (_React$Component) {
+	  _inherits(Details, _React$Component);
+
+	  function Details() {
+	    _classCallCheck(this, Details);
+
+	    return _possibleConstructorReturn(this, (Details.__proto__ || Object.getPrototypeOf(Details)).apply(this, arguments));
+	  }
+
+	  _createClass(Details, [{
+	    key: 'render',
+	    value: function render() {
+	      return React.createElement(
+	        'div',
+	        { className: 'container' },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'lolohi'
+	        ),
+	        '// for debugging',
+	        React.createElement(
+	          'pre',
+	          { style: { textAlign: 'left' } },
+	          React.createElement(
+	            'code',
+	            null,
+	            JSON.stringify(this.props, null, 4)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Details;
+	}(React.Component);
+
+	;
+
+	module.exports = Details;
+
+/***/ },
+/* 227 */
 /***/ function(module, exports) {
 
 	module.exports = {
@@ -26050,31 +26156,6 @@
 			}
 		]
 	};
-
-/***/ },
-/* 226 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-
-	var React = __webpack_require__(1);
-
-	var Layout = function Layout(props) {
-	  return React.createElement(
-	    "div",
-	    { className: "app-container" },
-	    props.children
-	  );
-	};
-
-	var element = React.PropTypes.element;
-
-
-	Layout.propTypes = {
-	  children: element.isRequired
-	};
-
-	module.exports = Layout;
 
 /***/ }
 /******/ ]);
