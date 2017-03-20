@@ -50,8 +50,8 @@
 	var ReactDOM = __webpack_require__(158);
 	var Landing = __webpack_require__(159);
 	var Search = __webpack_require__(223);
-	var Layout = __webpack_require__(225);
-	var Details = __webpack_require__(226);
+	var Layout = __webpack_require__(248);
+	var Details = __webpack_require__(249);
 
 	var _require = __webpack_require__(160),
 	    Router = _require.Router,
@@ -59,15 +59,18 @@
 	    IndexRoute = _require.IndexRoute,
 	    hashHistory = _require.hashHistory;
 
-	var _require2 = __webpack_require__(227),
+	var _require2 = __webpack_require__(250),
 	    shows = _require2.shows;
 
 	var App = React.createClass({
 	  displayName: 'App',
 	  assignShow: function assignShow(nextState, replace) {
 	    var showArray = shows.filter(function (show) {
-	      return show.imdbID === nextState.id;
+	      return show.imdbID === nextState.params.id;
 	    });
+
+	    console.log('nextState', nextState, 'showArray', showArray);
+
 	    if (showArray.length < 1) {
 	      return replace('/');
 	    }
@@ -83,7 +86,7 @@
 	        { path: '/', component: Layout },
 	        React.createElement(IndexRoute, { component: Landing }),
 	        React.createElement(Route, { path: '/search', component: Search, shows: shows }),
-	        React.createElement(Route, { path: '/details/:id', component: Details, onEnter: this.asignShow })
+	        React.createElement(Route, { path: '/details/:id', component: Details, onEnter: this.assignShow })
 	      )
 	    );
 	  }
@@ -25797,6 +25800,7 @@
 	var React = __webpack_require__(1);
 	var ShowCard = __webpack_require__(224);
 	/* const data = require('../public/data'); */
+	var Header = __webpack_require__(225);
 	var object = React.PropTypes.object;
 
 
@@ -25811,9 +25815,9 @@
 	      searchTerm: ''
 	    };
 	  },
-	  handleSearchTermEvent: function handleSearchTermEvent(event) {
+	  handleSearchTermChange: function handleSearchTermChange(searchTerm) {
 	    this.setState({
-	      searchTerm: event.target.value
+	      searchTerm: searchTerm
 	    });
 	  },
 	  render: function render() {
@@ -25822,16 +25826,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'container' },
-	      React.createElement(
-	        'header',
-	        { className: 'header' },
-	        React.createElement(
-	          'h1',
-	          { className: 'brand' },
-	          'svideo'
-	        ),
-	        React.createElement('input', { defaultValue: this.state.searchTerm, className: 'search-input', type: 'text', placeholder: 'Search', onChange: this.handleSearchTermEvent })
-	      ),
+	      React.createElement(Header, { handleSearchTermChange: this.handleSearchTermChange, searchTerm: this.state.searchTerm, showSearch: true }),
 	      React.createElement(
 	        'div',
 	        { className: 'shows' },
@@ -25902,14 +25897,99 @@
 /* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var _require = __webpack_require__(160),
+	    Link = _require.Link;
+
+	var _React$PropTypes = React.PropTypes,
+	    func = _React$PropTypes.func,
+	    bool = _React$PropTypes.bool,
+	    string = _React$PropTypes.string;
+
+
+	var Header = React.createClass({
+	  displayName: 'Header',
+
+	  propTypes: {
+	    handleSearchTermChange: func,
+	    showSearch: bool,
+	    searchTerm: string
+	  },
+	  handleSearchTermEvent: function handleSearchTermEvent(e) {
+	    this.props.handleSearchTermChange();
+	  },
+	  render: function render() {
+	    var utilSpace = void 0;
+	    if (this.props.showSearch) {
+	      utilSpace = React.createElement('input', { type: 'text', className: 'search-input', placeholder: 'search', value: this.props.searchTerm, onChange: this.props.handleSearchTermEvent });
+	    } else {
+	      utilSpace = React.createElement(
+	        'h2',
+	        { className: 'header-back' },
+	        React.createElement(
+	          Link,
+	          { to: '/search' },
+	          'Back'
+	        )
+	      );
+	    }
+
+	    return React.createElement(
+	      'hader',
+	      { className: 'header' },
+	      React.createElement(
+	        'h1',
+	        { className: 'brand' },
+	        React.createElement(
+	          Link,
+	          { to: '/', className: 'brand-link' },
+	          'svideo'
+	        )
+	      ),
+	      utilSpace
+	    );
+	  }
+	});
+
+	module.exports = Header;
+
+/***/ },
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	var React = __webpack_require__(1);
 
 	var Layout = function Layout(props) {
 	  return React.createElement(
-	    "div",
-	    { className: "app-container" },
+	    'div',
+	    { className: 'app-container' },
 	    props.children
 	  );
 	};
@@ -25924,7 +26004,7 @@
 	module.exports = Layout;
 
 /***/ },
-/* 226 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25938,6 +26018,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var React = __webpack_require__(1);
+	var Header = __webpack_require__(225);
 
 	var Details = function (_React$Component) {
 	  _inherits(Details, _React$Component);
@@ -25951,23 +26032,42 @@
 	  _createClass(Details, [{
 	    key: 'render',
 	    value: function render() {
+	      var params = this.props.params || {};
+	      var title = params.title,
+	          description = params.description,
+	          year = params.year,
+	          poster = params.poster,
+	          trailer = params.trailer;
+
+
 	      return React.createElement(
 	        'div',
 	        { className: 'container' },
+	        React.createElement(Header, null),
 	        React.createElement(
-	          'h1',
-	          null,
-	          'lolohi'
-	        ),
-	        '// for debugging',
-	        React.createElement(
-	          'pre',
-	          { style: { textAlign: 'left' } },
+	          'div',
+	          { className: 'video-info' },
 	          React.createElement(
-	            'code',
-	            null,
-	            JSON.stringify(this.props, null, 4)
+	            'h1',
+	            { className: 'video-title' },
+	            title
+	          ),
+	          React.createElement(
+	            'h2',
+	            { className: 'video-year' },
+	            year
+	          ),
+	          React.createElement('img', { className: 'video-poster', src: 'public/img/posters/' + poster }),
+	          React.createElement(
+	            'p',
+	            { className: 'video-description' },
+	            description
 	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'video-container' },
+	          React.createElement('iframe', { src: 'http://www.youtube-nocookie.com/embed/' + trailer + '?rel=0&amp;controls=0&amp;showinfo=0', frameBorder: '0', allowFullScreen: true })
 	        )
 	      );
 	    }
@@ -25978,10 +26078,17 @@
 
 	;
 
+	var object = React.PropTypes.object;
+
+
+	Details.propTypes = {
+	  params: object.isRequired
+	};
+
 	module.exports = Details;
 
 /***/ },
-/* 227 */
+/* 250 */
 /***/ function(module, exports) {
 
 	module.exports = {

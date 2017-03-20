@@ -9,7 +9,10 @@ const { shows } = require('../public/data');
 
 const App = React.createClass({
   assignShow (nextState, replace) {
-    const showArray = shows.filter(show => show.imdbID === nextState.id);
+    const showArray = shows.filter((show) => show.imdbID === nextState.params.id);
+
+    console.log('nextState', nextState, 'showArray', showArray);
+
     if (showArray.length < 1) {
       return replace('/');
     }
@@ -22,7 +25,7 @@ const App = React.createClass({
         <Route path='/' component={Layout}>
           <IndexRoute component={Landing} />
           <Route path='/search' component={Search} shows={shows} />
-          <Route path='/details/:id' component={Details} onEnter={this.asignShow} />
+          <Route path='/details/:id' component={Details} onEnter={this.assignShow} />
         </Route>
       </Router>
     );
